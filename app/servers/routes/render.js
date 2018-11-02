@@ -2,10 +2,11 @@
  * @Author: yangshuwei 
  * @Date: 2018-10-18 17:43:15 
  * @Last Modified by: yangshuwei
- * @Last Modified time: 2018-10-18 17:48:23
+ * @Last Modified time: 2018-10-30 17:12:25
  */
 import { match } from 'react-router'
 import renderCtrl from '../controllers'
+import routes from '../../../client/routers'
 
 function _match (location) {
   return new Promise((resolve, reject) => {
@@ -19,10 +20,11 @@ function _match (location) {
 }
 export default async (ctx, next) => {
   try {
-    const { redirectLocation, renderProps } = await _match({ routes: require('../../../client/routers'), location: ctx.url })
+    const { redirectLocation, renderProps } = await _match({ routes: routes, location: ctx.url })
     if (redirectLocation) {
       ctx.redirect(redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
+      console.log(ctx.url)
       await renderCtrl(ctx, next, renderProps)
     } else {
       await next()
